@@ -4,13 +4,13 @@ import { logger } from 'npm:hono/logger';
 import { createClient } from 'npm:@supabase/supabase-js@2';
 import * as kv from './kv_store.tsx';
 
-const app = new Hono();
+const app = new Hono().basePath('/server');
 
 app.use('*', logger(console.log));
 app.use('*', cors({
   origin: '*',
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowHeaders: ['Content-Type', 'Authorization'],
+  allowHeaders: ['Content-Type', 'Authorization', 'x-client-info', 'x-supabase-api-version'],
 }));
 
 const supabase = createClient(
