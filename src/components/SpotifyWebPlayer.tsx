@@ -18,7 +18,7 @@ declare global {
   }
 }
 
-export function SpotifyWebPlayer({ trackUri, trackName, artistName }: SpotifyWebPlayerProps) {
+export function SpotifyWebPlayer({ trackUri, trackName, artistName, positionMs = 0 }: SpotifyWebPlayerProps) {
   const [player, setPlayer] = useState<any>(null);
   const [deviceId, setDeviceId] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -98,7 +98,7 @@ export function SpotifyWebPlayer({ trackUri, trackName, artistName }: SpotifyWeb
     if (deviceId && trackUri) {
       playTrack();
     }
-  }, [deviceId, trackUri]);
+  }, [deviceId, trackUri, positionMs]);
 
   useEffect(() => {
     if (isPlaying) {
