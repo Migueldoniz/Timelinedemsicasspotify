@@ -5,7 +5,7 @@ import { createClient } from 'npm:@supabase/supabase-js@2';
 import * as kv from './kv_store.tsx';
 
 const app = new Hono().basePath('/server');
-
+const FRONTEND_URL = Deno.env.get('FRONTEND_URL') || "http://localhost:3000";
 app.use('*', logger(console.log));
 app.use('*', cors({
   origin: '*',
@@ -245,11 +245,11 @@ app.get('/spotify/callback', async (c) => {
     const error = c.req.query('error');
     
     if (error) {
-      return c.redirect(`/?spotify_error=${error}`);
+      return c.redirect(`${FRONTEND_URL}/?spotify_error=${error}`);
     }
     
     if (!code || !state) {
-      return c.redirect('/?spotify_error=missing_code');
+      return c.redirect(`${FRONTEND_URL}/?spotify_error=missing_code`);
     }
     
     const clientId = Deno.env.get('SPOTIFY_CLIENT_ID');
@@ -274,7 +274,7 @@ app.get('/spotify/callback', async (c) => {
     if (!tokenResponse.ok) {
       const errorData = await tokenResponse.text();
       console.log('Spotify token error:', errorData);
-      return c.redirect('/?spotify_error=token_failed');
+      return c.redirect(`${FRONTEND_URL}/?spotify_error=token_failed`);
     }
     
     const tokens = await tokenResponse.json();
@@ -286,10 +286,10 @@ app.get('/spotify/callback', async (c) => {
       expires_at: Date.now() + (tokens.expires_in * 1000),
     });
     
-    return c.redirect('/?spotify_connected=true');
+    return c.redirect(`${FRONTEND_URL}/?spotify_connected=true`);
   } catch (error) {
     console.log('Error in Spotify callback:', error);
-    return c.redirect('/?spotify_error=callback_failed');
+    return c.redirect(`${FRONTEND_URL}/?spotify_error=callback_failed`);
   }
 });
 
