@@ -29,6 +29,8 @@ export interface Song {
   title: string;
   artist: string;
   spotifyUri: string;
+  startTimeMinutes?: number; // Novo campo
+  startTimeSeconds?: number; // Novo campo
 }
 
 export interface Moment {

@@ -8,6 +8,7 @@ interface SpotifyWebPlayerProps {
   trackUri: string;
   trackName: string;
   artistName: string;
+  positionMs?: number; // Adiciona esta prop
 }
 
 declare global {
@@ -130,6 +131,7 @@ export function SpotifyWebPlayer({ trackUri, trackName, artistName }: SpotifyWeb
         },
         body: JSON.stringify({
           uris: [trackUri],
+          position_ms: positionMs,
         }),
       });
     } catch (error) {

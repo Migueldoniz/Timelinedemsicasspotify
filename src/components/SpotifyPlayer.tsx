@@ -8,6 +8,8 @@ interface SpotifyPlayerProps {
 }
 
 export function SpotifyPlayer({ song, useWebPlayer = false }: SpotifyPlayerProps) {
+  // Converter tempo para milissegundos para o SDK
+  const startTimeMs = ((song.startTimeMinutes || 0) * 60 + (song.startTimeSeconds || 0)) * 1000;
   // Converter URI do Spotify para URL do embed
   const getSpotifyEmbedUrl = (uri: string) => {
     if (!uri) return '';
@@ -29,6 +31,7 @@ export function SpotifyPlayer({ song, useWebPlayer = false }: SpotifyPlayerProps
         trackUri={song.spotifyUri}
         trackName={song.title}
         artistName={song.artist}
+        positionMs={startTimeMs}
       />
     );
   }

@@ -282,6 +282,29 @@ export function TimelineEditor({ timeline, onCancel, onSave }: TimelineEditorPro
                         💡 Cole o link da música do Spotify aqui (será convertido automaticamente)
                       </p>
                     </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-1">
+                        <Label className="text-purple-200 text-xs">Minuto de Início</Label>
+                        <Input
+                          type="number"
+                          min="0"
+                          value={song.startTimeMinutes || 0}
+                          onChange={(e) => updateSong(moment.id, song.id, { startTimeMinutes: parseInt(e.target.value) || 0 })}
+                          className="bg-white/10 border-white/20 text-white"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label className="text-purple-200 text-xs">Segundo de Início</Label>
+                        <Input
+                          type="number"
+                          min="0"
+                          max="59"
+                          value={song.startTimeSeconds || 0}
+                          onChange={(e) => updateSong(moment.id, song.id, { startTimeSeconds: parseInt(e.target.value) || 0 })}
+                          className="bg-white/10 border-white/20 text-white"
+                        />
+                      </div>
+                    </div>
                   </div>
                 ))}
 
