@@ -34,7 +34,7 @@ async function verifyUser(request: Request) {
 }
 
 // Registro de usuário
-app.post('/make-server-f629248c/signup', async (c) => {
+app.post('/signup', async (c) => {
   try {
     const { email, password, name } = await c.req.json();
     
@@ -46,7 +46,7 @@ app.post('/make-server-f629248c/signup', async (c) => {
       email,
       password,
       user_metadata: { name },
-      email_confirm: true, // Auto-confirma email pois servidor de email não está configurado
+      email_confirm: false, // Auto-confirma email pois servidor de email não está configurado
     });
     
     if (error) {
@@ -62,7 +62,7 @@ app.post('/make-server-f629248c/signup', async (c) => {
 });
 
 // Listar timelines do usuário
-app.get('/make-server-f629248c/timelines', async (c) => {
+app.get('/timelines', async (c) => {
   try {
     const { error: authError, user } = await verifyUser(c.req.raw);
     if (authError || !user) {
@@ -88,7 +88,7 @@ app.get('/make-server-f629248c/timelines', async (c) => {
 });
 
 // Buscar timeline específica
-app.get('/make-server-f629248c/timelines/:id', async (c) => {
+app.get('/timelines/:id', async (c) => {
   try {
     const { error: authError, user } = await verifyUser(c.req.raw);
     if (authError || !user) {
@@ -110,7 +110,7 @@ app.get('/make-server-f629248c/timelines/:id', async (c) => {
 });
 
 // Criar nova timeline
-app.post('/make-server-f629248c/timelines', async (c) => {
+app.post('/timelines', async (c) => {
   try {
     const { error: authError, user } = await verifyUser(c.req.raw);
     if (authError || !user) {
@@ -150,7 +150,7 @@ app.post('/make-server-f629248c/timelines', async (c) => {
 });
 
 // Atualizar timeline
-app.put('/make-server-f629248c/timelines/:id', async (c) => {
+app.put('/timelines/:id', async (c) => {
   try {
     const { error: authError, user } = await verifyUser(c.req.raw);
     if (authError || !user) {
@@ -184,7 +184,7 @@ app.put('/make-server-f629248c/timelines/:id', async (c) => {
 });
 
 // Deletar timeline
-app.delete('/make-server-f629248c/timelines/:id', async (c) => {
+app.delete('/timelines/:id', async (c) => {
   try {
     const { error: authError, user } = await verifyUser(c.req.raw);
     if (authError || !user) {
@@ -210,7 +210,7 @@ app.delete('/make-server-f629248c/timelines/:id', async (c) => {
 });
 
 // Iniciar autenticação com Spotify
-app.get('/make-server-f629248c/spotify/auth', async (c) => {
+app.get('/spotify/auth', async (c) => {
   try {
     const { error: authError, user } = await verifyUser(c.req.raw);
     if (authError || !user) {
@@ -218,7 +218,8 @@ app.get('/make-server-f629248c/spotify/auth', async (c) => {
     }
     
     const clientId = Deno.env.get('SPOTIFY_CLIENT_ID');
-    const redirectUri = `${c.req.url.split('/make-server-f629248c')[0]}/make-server-f629248c/spotify/callback`;
+    const functionName = "server"; // ou o nome correto
+    const redirectUri = `${c.req.url.split('/' + functionName)[0]}/${functionName}/spotify/callback`;
     
     const scope = 'user-read-private user-read-email streaming user-read-playback-state user-modify-playback-state';
     const state = user.id; // Usar user ID como state
@@ -238,7 +239,7 @@ app.get('/make-server-f629248c/spotify/auth', async (c) => {
 });
 
 // Callback do Spotify OAuth
-app.get('/make-server-f629248c/spotify/callback', async (c) => {
+app.get('/spotify/callback', async (c) => {
   try {
     const code = c.req.query('code');
     const state = c.req.query('state'); // user ID
@@ -254,7 +255,8 @@ app.get('/make-server-f629248c/spotify/callback', async (c) => {
     
     const clientId = Deno.env.get('SPOTIFY_CLIENT_ID');
     const clientSecret = Deno.env.get('SPOTIFY_CLIENT_SECRET');
-    const redirectUri = `${c.req.url.split('/make-server-f629248c')[0]}/make-server-f629248c/spotify/callback`;
+    const functionName = "server"; // ou o nome correto
+    const redirectUri = `${c.req.url.split('/server')[0]}/server/spotify/callback`;
     
     // Trocar code por access token
     const tokenResponse = await fetch('https://accounts.spotify.com/api/token', {
@@ -293,7 +295,7 @@ app.get('/make-server-f629248c/spotify/callback', async (c) => {
 });
 
 // Obter access token do Spotify (com refresh se necessário)
-app.get('/make-server-f629248c/spotify/token', async (c) => {
+app.get('/spotify/token', async (c) => {
   try {
     const { error: authError, user } = await verifyUser(c.req.raw);
     if (authError || !user) {
@@ -351,7 +353,7 @@ app.get('/make-server-f629248c/spotify/token', async (c) => {
 });
 
 // Desconectar do Spotify
-app.delete('/make-server-f629248c/spotify/disconnect', async (c) => {
+app.delete('/spotify/disconnect', async (c) => {
   try {
     const { error: authError, user } = await verifyUser(c.req.raw);
     if (authError || !user) {

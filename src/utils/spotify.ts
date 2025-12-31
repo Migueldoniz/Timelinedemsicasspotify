@@ -1,7 +1,7 @@
 import { projectId, publicAnonKey } from './supabase/info';
 import { getSession } from './auth';
 
-const baseUrl = `https://${projectId}.supabase.co/functions/v1/make-server-f629248c`;
+const baseUrl = `https://${projectId}.supabase.co/functions/v1/server`;
 
 async function fetchWithAuth(url: string, options: RequestInit = {}) {
   const session = await getSession();

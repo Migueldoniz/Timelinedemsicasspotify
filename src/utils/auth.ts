@@ -12,7 +12,7 @@ export interface User {
 }
 
 export async function signUp(email: string, password: string, name: string) {
-  const response = await fetch(`${supabaseUrl}/functions/v1/make-server-f629248c/signup`, {
+  const response = await fetch(`${supabaseUrl}/functions/v1/server/signup`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
