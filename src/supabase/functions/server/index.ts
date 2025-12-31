@@ -218,8 +218,7 @@ app.get('/spotify/auth', async (c) => {
     }
     
     const clientId = Deno.env.get('SPOTIFY_CLIENT_ID');
-    const functionName = "server"; // ou o nome correto
-    const redirectUri = `${c.req.url.split('/' + functionName)[0]}/${functionName}/spotify/callback`;
+    const redirectUri = `https://xendfvgxucllfaazxksb.supabase.co/functions/v1/server/spotify/callback`;
     
     const scope = 'user-read-private user-read-email streaming user-read-playback-state user-modify-playback-state';
     const state = user.id; // Usar user ID como state
@@ -229,7 +228,7 @@ app.get('/spotify/auth', async (c) => {
       `client_id=${clientId}&` +
       `scope=${encodeURIComponent(scope)}&` +
       `redirect_uri=${encodeURIComponent(redirectUri)}&` +
-      `state=${state}`;
+      `state=${user.id}`;
     
     return c.json({ authUrl });
   } catch (error) {
@@ -256,7 +255,7 @@ app.get('/spotify/callback', async (c) => {
     const clientId = Deno.env.get('SPOTIFY_CLIENT_ID');
     const clientSecret = Deno.env.get('SPOTIFY_CLIENT_SECRET');
     const functionName = "server"; // ou o nome correto
-    const redirectUri = `${c.req.url.split('/server')[0]}/server/spotify/callback`;
+    const redirectUri = `https://xendfvgxucllfaazxksb.supabase.co/functions/v1/server/spotify/callback`;
     
     // Trocar code por access token
     const tokenResponse = await fetch('https://accounts.spotify.com/api/token', {
