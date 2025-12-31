@@ -123,7 +123,7 @@ export function SpotifyWebPlayer({ trackUri, trackName, artistName, positionMs =
     if (!token || !deviceId) return;
 
     try {
-      await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
+      await fetch(`https://accounts.spotify.com/api/token1${deviceId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
